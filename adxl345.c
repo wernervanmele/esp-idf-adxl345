@@ -365,6 +365,12 @@ void adxl345_start_measure(void)
 } */
 static double IRAM_ATTR dsp_ema_i32(double in, double average, float alpha )
 {
+    if (alpha > 1.0f) {
+        alpha = 1.0f;
+    } else if (alpha < 0.0f) {
+        alpha = 0.0f;
+    }
+
     return (double)(in * (alpha) + (average * (1 - alpha)));
 }
 
