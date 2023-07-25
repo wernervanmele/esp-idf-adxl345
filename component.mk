@@ -1,0 +1,1 @@
+COMPONENT_DEPENDS := i2c_manager

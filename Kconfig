@@ -1,0 +1,12 @@
+menu "ADXL345 Digital Accelerometer"
+
+    config ADXL345_SENSOR_ENABLED
+        bool "Enable ADXL345 Sensor module (Requires I2C Manager)"
+        depends on I2C_MANAGER_0_ENABLED || I2C_MANAGER_1_ENABLED
+
+    if ADXL345_SENSOR_ENABLED
+        config ADXL345_I2C_ADDRESS_0
+            hex "ADXL345 Sensor 0 - I2C Address"
+            default 0x53
+    endif
+endmenu
