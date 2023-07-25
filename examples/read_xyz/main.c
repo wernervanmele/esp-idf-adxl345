@@ -33,10 +33,15 @@ static const char *TAG = "app_main";
 
 void app_main(void)
 {
+    /* selftest req
+        set data rate: 100 <-> 3200 (BW_RATE
+        clear LOW_POWER in BW_RATE reg
+        set to 16G mode
 
+    */
     if (adxl345_begin()) {
         xTaskCreate(adxl345_task, "adxl345_Task", 4096, NULL, 5, &AccelTask_h);
-        xTaskCreate(adxl345_setDataRate1, "DataRate", 4096, NULL, 5, &DataRate1_h);
+        xTaskCreate(adxl345_setDataRate1, "DR1", 4096, NULL, 5, &DataRate1_h);
         xTaskCreate(adxl345_setgetrange, "Ranges", 4096, NULL, 5, &SetGetRange1_h);
         xTaskCreate(adxl345_getaxis, "Axis", 4096, NULL, 5, &Axis_h);
     }
@@ -94,10 +99,13 @@ static void adxl345_getaxis(void *vParm)
     while (1) {
 
         adxl345_get_accel(&axis_data);
-        adxl345_get_accel_iir(&axis_data_iir, 0.01);        
-        ESP_LOGI(__func__, "\tX: %3.4f\tY: %3.4f\tZ: %3.4f\t|\tXf: %3.4f\tYf: %3.4f\tZf: %3.4fm/s", axis_data.x_ms, axis_data.y_ms, axis_data.z_ms, axis_data_iir.x_ms, axis_data_iir.y_ms, axis_data_iir.z_ms);
-
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        adxl345_get_accel_iir(&axis_data_iir, 0.01);
+        //ESP_LOGI(__func__, "X-Axis: %d - Y-Axis: %d - Z-Axis: %d", adxl345_get_x(), adxl345_get_y(), adxl345_get_z());
+        //ESP_LOGI(__func__, "X: %3d\t\tY: %3d\t\tZ: %3d", axis_data.x, axis_data.y, axis_data.z);
+        //  ESP_LOGI(__func__, "\tX: %3.4f\tY: %3.4f\tZ: %3.4f\t|\tXf: %3.4f\tYf: %3.4f\tZf: %3.4fm/s", axis_data.x_ms, axis_data.y_ms, axis_data.z_ms, axis_data_iir.x_ms, axis_data_iir.y_ms, axis_data_iir.z_ms);
+        // SerialMonitor
+        printf("/*%f,%f,%f,%f,%f,%f*/\n", axis_data.x_ms, axis_data.y_ms, axis_data.z_ms, axis_data_iir.x_ms, axis_data_iir.y_ms, axis_data_iir.z_ms);
+        vTaskDelay(pdMS_TO_TICKS(2000));
     }
     vTaskDelete(NULL);
 }

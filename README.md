@@ -20,6 +20,7 @@ idf.py set-target esp32     (depends on your board, esp32s2, esp32s3, esp32c3)
 mkdir components ; cd components  
 git clone https://github.com/ropg/i2c_manager.git  
 Read my I2C_MANAGER_README.md to apply fixes.  
+git clone https://github.com/wernervanmele/esp-idf-adxl345.git esp-idf-adxl345
 cd ..  
 idf.py menuconfig  
 - Component config > I2C Port Settings > do your I2C configuration  
